@@ -1,0 +1,73 @@
+/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin/java -Didea.launcher.port=7534 "-Didea.launcher.bin.path=/Applications/IntelliJ IDEA 13 EAP.app/bin" -Dfile.encoding=UTF-8 -classpath "/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/deploy.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/dt.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/javaws.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/jce.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/jconsole.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/management-agent.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/plugin.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/sa-jdi.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/charsets.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jsse.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/ui.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/apple_provider.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/dnsns.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/localedata.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/sunjce_provider.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/sunpkcs11.jar:/Users/Aleksey/Documents/scala/ai/target/scala-2.10/classes:/Users/Aleksey/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.2.jar:/Users/Aleksey/.sbt/boot/scala-2.10.2/lib/scala-library.jar:/Applications/IntelliJ IDEA 13 EAP.app/lib/idea_rt.jar" com.intellij.rt.execution.application.AppMain Main
+Limenis (632145)
+(632145) -> (63215, 32145, 63345, 63145, 63213), Z.f. = 5
+Limenis (63215, 32145, 63345, 63145, 63213)
+(63215) -> (3215, 6335, 6315), Z.f. = 3
+(32145) -> (5145, 2145, 3255, 3245), Z.f. = 4
+(63345) -> (3345, 6315, 6345), Z.f. = 3
+(63145) -> (3145, 6355, 6345), Z.f. = 3
+(63213) -> (3213, 6333, 6313), Z.f. = 3
+Limenis (6315, 6313, 3255, 6335, 6355, 2145, 3213, 5145, 6345, 3145, 3215, 6333, 3245, 3345)
+(6315) -> (315, 636, 635), Z.f. = 3
+(6313) -> (313, 634, 633), Z.f. = 3
+(3255) -> (555, 255, 324, 325), Z.f. = 4
+(6335) -> (335, 632, 635), Z.f. = 3
+(6355) -> (355, 634, 635), Z.f. = 3
+(2145) -> (345, 145, 213, 215), Z.f. = 4
+(3213) -> (513, 213, 324, 323), Z.f. = 4
+(5145) -> (645, 145, 513, 515), Z.f. = 4
+(6345) -> (345, 633, 635), Z.f. = 3
+(3145) -> (445, 145, 313, 315), Z.f. = 4
+(3215) -> (515, 215, 326, 325), Z.f. = 4
+(6333) -> (333, 636, 633), Z.f. = 3
+(3245) -> (545, 245, 323, 325), Z.f. = 4
+(3345) -> (645, 345, 333, 335), Z.f. = 4
+Limenis (515, 335, 324, 313, 255, 325, 635, 545, 634, 213, 445, 645, 636, 245, 145, 315, 326, 333, 633, 345, 215, 555, 323, 355, 632, 513)
+(515) -> (65, 15), Z.f. = 2
+(335) -> (65, 35), Z.f. = 2
+(324) -> (54, 24), Z.f. = 2
+(313) -> (43, 13), Z.f. = 2
+(255) -> (15, 55), Z.f. = 2
+(325) -> (55, 25), Z.f. = 2
+(635) -> (35), Z.f. = 1
+(545) -> (35, 45), Z.f. = 2
+(634) -> (34), Z.f. = 1
+(213) -> (33, 13), Z.f. = 2
+(445) -> (25, 45), Z.f. = 2
+(645) -> (45), Z.f. = 1
+(636) -> (36), Z.f. = 1
+(245) -> (65, 45), Z.f. = 2
+(145) -> (55, 45), Z.f. = 2
+(315) -> (45, 15), Z.f. = 2
+(326) -> (56, 26), Z.f. = 2
+(333) -> (63, 33), Z.f. = 2
+(633) -> (33), Z.f. = 1
+(345) -> (15, 45), Z.f. = 2
+(215) -> (35, 15), Z.f. = 2
+(555) -> (45, 55), Z.f. = 2
+(323) -> (53, 23), Z.f. = 2
+(355) -> (25, 55), Z.f. = 2
+(632) -> (32), Z.f. = 1
+(513) -> (63, 13), Z.f. = 2
+Limenis (45, 34, 23, 15, 33, 56, 55, 26, 13, 24, 35, 54, 43, 65, 32, 36, 25, 53, 63)
+(45) -> (3, 5), Z.f. = 2
+(34) -> (1, 4), Z.f. = 2
+(23) -> (5, 3), Z.f. = 2
+(15) -> (6, 5), Z.f. = 2
+(33) -> (6, 3), Z.f. = 2
+(56) -> (5, 6), Z.f. = 2
+(55) -> (4, 5), Z.f. = 2
+(26) -> (2, 6), Z.f. = 2
+(13) -> (4, 3), Z.f. = 2
+(24) -> (6, 4), Z.f. = 2
+(35) -> (2, 5), Z.f. = 2
+(54) -> (3, 4), Z.f. = 2
+(43) -> (1, 3), Z.f. = 2
+(65) -> (5), Z.f. = 1
+(32) -> (5, 2), Z.f. = 2
+(36) -> (3, 6), Z.f. = 2
+(25) -> (1, 5), Z.f. = 2
+(53) -> (2, 3), Z.f. = 2
+(63) -> (3), Z.f. = 1
+Limenis (4, 5, 6, 1, 2, 3)
+153
