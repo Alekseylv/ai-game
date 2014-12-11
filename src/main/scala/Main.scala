@@ -25,16 +25,35 @@ object Main {
       })
     })
 
-    println(graph)
-    println(climb(graph))
+    println(star(graph).foreach(println))
+
+//    val s = miniMax(graph)
+//    println(graph.toString(s.apply))
   }
 
   def star(graph:Graph) = {
-    search(graph)(x => x.sortBy(- _._2).take(2))
+    search(graph)(x => x.sortBy(- _._2).take(3))
   }
 
   def climb(graph:Graph) = {
     search(graph)(x => List(x.max[(Int, Double)](Ordering.by(s => s._2))))
+  }
+
+  def miniMax(graph:Graph) = {
+    val start = 0
+    val values = Array.fill(graph.V)(0)
+    def vertexValue(v:Int, level:Boolean):Boolean = {
+      val result = if (graph.outbound(v).isEmpty) {
+        graph.mapping(v).toInt % 2 == 1
+      } else { // remove toStream for non-optimized minimax
+        graph.outbound(v).toStream.map(x => vertexValue(x, !level)).find(_ == level).getOrElse(!level)
+      }
+
+      values(v) = if (result) 11 else 22
+      result
+    }
+    vertexValue(0, level = false)
+    values
   }
 
   def search(graph:Graph)(p:List[(Int, Double)] => List[(Int, Double)]) = {

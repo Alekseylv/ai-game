@@ -57,14 +57,18 @@ class Graph(val V: Int, val mapping: Mapping) {
   private def round(d: Double) = (10000 * d).round * 0.0001
 
   override def toString = {
+    toString(x => round(heuristic(x)))
+  }
+
+  def toString(p: Int => Number) = {
     val NEWLINE = System.getProperty("line.separator")
     (V + " vertices, " + E + " edges " + NEWLINE) +
       (0 to V - 1).map(x => {
-        s"${mapping(x)} (${round(heuristic(x))}}): " + adjecentOutbound(x).map(mapping(_)).mkString(" ")
+        s"${mapping(x)} (${p(x)}): " + adjecentOutbound(x).map(mapping(_)).mkString(" ")
       }).mkString(NEWLINE)
   }
 
   def outerToInnerEdge(e: EdgeOuter): EdgeInner = (mapping(e._1), mapping(e._2))
 
-  def mapWithObjective(v:Int) = (mapping(v), heuristic(v))
+  def mapWithObjective(v: Int) = (mapping(v), heuristic(v))
 }
