@@ -10,7 +10,6 @@ object Main {
     var canClimbTo2 = 0
     val permutations = Array.fill(6)(1 to 6 toList).flatten.combinations(6).map(_.permutations).flatten.toList.map(_.mkString(""))
     permutations.foreach(x => {
-      println(x)
       val res = result(x)
       if (res._1.mapping.stringToInt.contains("2")) {
         hasResultWith2 += 1
