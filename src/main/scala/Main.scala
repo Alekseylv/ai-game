@@ -6,15 +6,41 @@ object Main {
   type Result = List[List[String]]
 
   def main(args: Array[String]) {
+    var hasResultWith2 = 0
+    var canClimbTo2 = 0
+    val permutations = Array.fill(6)(1 to 6 toList).flatten.combinations(6).map(_.permutations).flatten.toList.map(_.mkString(""))
+    permutations.foreach(x => {
+      println(x)
+      val res = result(x)
+      if (res._1.mapping.stringToInt.contains("2")) {
+        hasResultWith2 += 1
+        if (res._2.last.contains("2")) {
+          canClimbTo2 += 1
+        }
+      }
+    })
+
+    println(s"total results = ${permutations.length}, nonempty results = $hasResultWith2, good results = $canClimbTo2")
+//     nonempty results = 43883, good results = 38534
+//     nonempty results = 43883, good results = 42710
+
+    //      result("632145").foreach(println)
+
+
+//    val s = miniMax(graph)
+//    println(graph.toString(s.apply))
+  }
+
+  def result(start:String) = {
     val map = mutable.HashMap[String, List[String]]()
-    var current = List("632145".toList.map(_.toString))
+    var current = List(start.toList.map(_.toString))
     var result = List[Result](current)
     do {
       current = current.map(addToMapAndExplode(map, _)).flatten
       result ::= current
     } while (current.head.length > 1)
     val levels = result.reverse.map(_.map(_.mkString(""))).map(_.toSet.toList)
-//    levels.foreach(println)
+    //    levels.foreach(println)
 
     val mapping = new Mapping(levels.flatten)
     val graph = new Graph(mapping.intToString.length, mapping)
@@ -25,10 +51,7 @@ object Main {
       })
     })
 
-    println(star(graph).foreach(println))
-
-//    val s = miniMax(graph)
-//    println(graph.toString(s.apply))
+    (graph, star(graph).map(withoutObjective))
   }
 
   def star(graph:Graph) = {
@@ -40,7 +63,6 @@ object Main {
   }
 
   def miniMax(graph:Graph) = {
-    val start = 0
     val values = Array.fill(graph.V)(0)
     def vertexValue(v:Int, level:Boolean):Boolean = {
       val result = if (graph.outbound(v).isEmpty) {
@@ -55,6 +77,8 @@ object Main {
     vertexValue(0, level = false)
     values
   }
+
+  def withoutObjective(list: List[(String, Double)]) = list.map(_._1)
 
   def search(graph:Graph)(p:List[(Int, Double)] => List[(Int, Double)]) = {
     def internal(node: List[Int]): List[List[(String, Double)]] = node.map(graph.outbound).flatten match {
