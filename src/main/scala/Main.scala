@@ -4,8 +4,26 @@ import scala.collection.mutable
 
 object Main {
   type Result = List[List[String]]
+  type Level = (List[(String, Double)], List[(String, Double)])
 
   def main(args: Array[String]) {
+    //   statistics()
+    //      val s = miniMax(graph)
+    //      println(graph.toString(s.apply))
+    result("632145")._2.foreach(levelToString _ andThen println)
+  }
+
+  def levelToString(input: Level) = {
+    val sorted = (input._1.sortBy(-_._2), input._2.sortBy(-_._2))
+    s"${inputToString(sorted._1)("OPEN")} ${inputToString(sorted._2)("Closed")}"
+  }
+
+  def inputToString(input: List[(String, Double)])(name: String) = {
+    val sanitized = input.map(x => s"${x._1}[${x._2.formatted("%1.4e")}]").mkString(", ")
+    s"$name: $sanitized"
+  }
+
+  def statistics() {
     var hasResultWith2 = 0
     var canClimbTo2 = 0
     val permutations = Array.fill(6)(1 to 6 toList).flatten.combinations(6).map(_.permutations).flatten.toList.map(_.mkString(""))
@@ -13,24 +31,19 @@ object Main {
       val res = result(x)
       if (res._1.mapping.stringToInt.contains("2")) {
         hasResultWith2 += 1
-        if (res._2.last.contains("2")) {
+        if (res._2.map(s => withoutObjective(s._1)).last.contains("2")) {
           canClimbTo2 += 1
         }
       }
     })
 
     println(s"total results = ${permutations.length}, nonempty results = $hasResultWith2, good results = $canClimbTo2")
-//     nonempty results = 43883, good results = 38534
-//     nonempty results = 43883, good results = 42710
-
-    //      result("632145").foreach(println)
-
-
-//    val s = miniMax(graph)
-//    println(graph.toString(s.apply))
+    //           total results = 46656
+    //  climb:   nonempty results = 43883, good results = 38534
+    //  star:    nonempty results = 43883, good results = 42710
   }
 
-  def result(start:String) = {
+  def result(start: String) = {
     val map = mutable.HashMap[String, List[String]]()
     var current = List(start.toList.map(_.toString))
     var result = List[Result](current)
@@ -50,23 +63,24 @@ object Main {
       })
     })
 
-    (graph, star(graph).map(withoutObjective))
+    (graph, star(graph))
   }
 
-  def star(graph:Graph) = {
-    search(graph)(x => x.sortBy(- _._2).take(3))
+  def star(graph: Graph) = {
+    search(graph)(x => x.sortBy(-_._2).take(3))
   }
 
-  def climb(graph:Graph) = {
+  def climb(graph: Graph) = {
     search(graph)(x => List(x.max[(Int, Double)](Ordering.by(s => s._2))))
   }
 
-  def miniMax(graph:Graph) = {
+  def miniMax(graph: Graph) = {
     val values = Array.fill(graph.V)(0)
-    def vertexValue(v:Int, level:Boolean):Boolean = {
+    def vertexValue(v: Int, level: Boolean): Boolean = {
       val result = if (graph.outbound(v).isEmpty) {
         graph.mapping(v).toInt % 2 == 1
-      } else { // remove toStream for non-optimized minimax
+      } else {
+        // remove toStream for non-optimized minimax
         graph.outbound(v).toStream.map(x => vertexValue(x, !level)).find(_ == level).getOrElse(!level)
       }
 
@@ -79,16 +93,17 @@ object Main {
 
   def withoutObjective(list: List[(String, Double)]) = list.map(_._1)
 
-  def search(graph:Graph)(p:List[(Int, Double)] => List[(Int, Double)]) = {
-    def internal(node: List[Int]): List[List[(String, Double)]] = node.map(graph.outbound).flatten match {
+  def search(graph: Graph)(p: List[(Int, Double)] => List[(Int, Double)]): List[Level] = {
+    def internal(node: List[Int], closed: List[(String, Double)]): List[Level] = node.map(graph.outbound).flatten match {
       case Nil => Nil
       case x => {
-        val temp: List[(Int, Double)] = x.map(p => (p, graph.heuristic(p)))
-        val next = p(temp.distinct).map(_._1)
-        next.map(graph.mapWithObjective) :: internal(next)
+        val temp: List[(Int, Double)] = x.map(p => (p, graph.heuristic(p))).distinct
+        val next = p(temp)
+        val currentClosed = closed ::: (temp diff next).map(x => (graph.mapping(x._1), x._2))
+        (next.map(x => (graph.mapping(x._1), x._2)), currentClosed) :: internal(next.map(_._1), currentClosed)
       }
     }
-    List(graph.mapWithObjective(0)) :: internal(List(0))
+    (List(graph.mapWithObjective(0)), List()) :: internal(List(0), List())
   }
 
   def addToMapAndExplode(map: mutable.HashMap[String, List[String]], arg: List[String]) = {
