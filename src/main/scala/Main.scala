@@ -10,7 +10,14 @@ object Main {
     //   statistics()
     //      val s = miniMax(graph)
     //      println(graph.toString(s.apply))
-    result("632145")._2.foreach(levelToString _ andThen println)
+//    val res = result("63215")
+//    println(res._1)
+//    res._2.foreach(levelToString _ andThen println)
+
+    val graph = createGraph("63215")
+    val s = miniMax(graph)
+    println(graph.toString(x => s.apply(x).toString))
+    pathsToVictory(graph, s).foreach(println)
   }
 
   def levelToString(input: Level) = {
@@ -44,6 +51,19 @@ object Main {
   }
 
   def result(start: String) = {
+    val graph = createGraph(start)
+    (graph, climb(graph))
+  }
+
+  def star(graph: Graph) = {
+    search(graph)(x => x.sortBy(-_._2).take(3))
+  }
+
+  def climb(graph: Graph) = {
+    search(graph)(x => List(x.max[(Int, Double)](Ordering.by(s => s._2))))
+  }
+
+  def createGraph(start:String) = {
     val map = mutable.HashMap[String, List[String]]()
     var current = List(start.toList.map(_.toString))
     var result = List[Result](current)
@@ -63,32 +83,33 @@ object Main {
       })
     })
 
-    (graph, star(graph))
-  }
-
-  def star(graph: Graph) = {
-    search(graph)(x => x.sortBy(-_._2).take(3))
-  }
-
-  def climb(graph: Graph) = {
-    search(graph)(x => List(x.max[(Int, Double)](Ordering.by(s => s._2))))
+    graph
   }
 
   def miniMax(graph: Graph) = {
-    val values = Array.fill(graph.V)(0)
+    val values = Array.fill(graph.V)(-1)
     def vertexValue(v: Int, level: Boolean): Boolean = {
       val result = if (graph.outbound(v).isEmpty) {
         graph.mapping(v).toInt % 2 == 1
       } else {
         // remove toStream for non-optimized minimax
-        graph.outbound(v).toStream.map(x => vertexValue(x, !level)).find(_ == level).getOrElse(!level)
+        graph.outbound(v).map(x => vertexValue(x, !level)).find(_ == level).getOrElse(!level)
       }
 
-      values(v) = if (result) 11 else 22
+      values(v) = if (result) 1 else 0
       result
     }
-    vertexValue(0, level = false)
+    vertexValue(0, level = true)
     values
+  }
+
+  def pathsToVictory(graph:Graph, values:Array[Int]) = {
+    val victor = values(0)
+    def search(v:Int):List[List[Int]] = {
+      if (graph.outbound(v).isEmpty) List(List(v)) else
+      graph.outbound(v).filter(values(_) == victor).map(search).flatten.map(v :: _)
+    }
+    search(0).map(_.map(graph.mapping.apply).mkString(" -> "))
   }
 
   def withoutObjective(list: List[(String, Double)]) = list.map(_._1)
@@ -100,10 +121,10 @@ object Main {
         val temp: List[(Int, Double)] = x.map(p => (p, graph.heuristic(p))).distinct
         val next = p(temp)
         val currentClosed = closed ::: (temp diff next).map(x => (graph.mapping(x._1), x._2))
-        (next.map(x => (graph.mapping(x._1), x._2)), currentClosed) :: internal(next.map(_._1), currentClosed)
+        (next.map(x => (graph.mapping(x._1), x._2)), currentClosed) :: internal(next.map(_._1), next.map(x => (graph.mapping(x._1), x._2)) ::: currentClosed)
       }
     }
-    (List(graph.mapWithObjective(0)), List()) :: internal(List(0), List())
+    (List(graph.mapWithObjective(0)), List()) :: internal(List(0), List(graph.mapWithObjective(0)))
   }
 
   def addToMapAndExplode(map: mutable.HashMap[String, List[String]], arg: List[String]) = {

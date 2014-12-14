@@ -54,17 +54,19 @@ class Graph(val V: Int, val mapping: Mapping) {
     (if (mod == 2) 0.95 else 0.0) + (0.1 / mapping(v).toInt.toDouble)
   }
 
-  private def round(d: Double) = (10000 * d).round * 0.0001
-
-  override def toString = {
-    toString(x => round(heuristic(x)))
+  def heuristicString(v: Int) = {
+    s"0.95*(((${mapping(v).toList.mkString(" + ")}) % 6) == 2) + 0.1/${mapping(v)} = 0.95 * (${mapping(v).toList.map(_.toString.toInt).sum % 6} == 2) + ${(0.1 / mapping(v).toInt.toDouble).formatted("%1.4e")} = ${heuristic(v).formatted("%1.4e")}"
   }
 
-  def toString(p: Int => Number) = {
+  override def toString = {
+    toString(x => heuristic(x).formatted("%1.4e"))
+  }
+
+  def toString(p: Int => String) = {
     val NEWLINE = System.getProperty("line.separator")
     (V + " vertices, " + E + " edges " + NEWLINE) +
       (0 to V - 1).map(x => {
-        s"${mapping(x)} (${p(x)}): " + adjecentOutbound(x).map(mapping(_)).mkString(" ")
+        s"${mapping(x)} [${p(x)}]: " + adjecentOutbound(x).map(mapping(_)).mkString(" ")
       }).mkString(NEWLINE)
   }
 
